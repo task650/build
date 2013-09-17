@@ -427,6 +427,7 @@ def WriteFullOTAPackage(input_zip, output_zip):
     script.FormatPartition("/data")
 
   script.Print("******************************************");
+  script.Print("*   Welcome to Task650's...              *");
   script.Print("*    ______  _____   __  __   _____      *");
   script.Print("*   /\\  _  \\/\\  __`\\/\\ \\/\\ \\ /\\  _ `\\    *");
   script.Print("*   \\ \\ \\L\\ \\ \\ \\/\\ \\ \\ \\/'/'\\ \\ \\L\\ \\   *");
@@ -447,7 +448,6 @@ def WriteFullOTAPackage(input_zip, output_zip):
   else:
     build = GetBuildProp("ro.build.date", OPTIONS.info_dict)
     script.Print("******************************************");
-    script.Print("************ UNOFFICIAL BUILD ************");
     script.Print("******************************************");
     script.Print("*   Compiled: %s"%(build));
 
