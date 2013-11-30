@@ -1450,17 +1450,24 @@ $(INTERNAL_OTA_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE) $(DISTTOOLS)
 	   $(separate_recovery) \
 	   $(BUILT_TARGET_FILES_PACKAGE) $@
 
-BOOT_ZIP_FROM_IMAGE_SCRIPT := ./build/tools/releasetools/boot_flash_from_image
-KERNEL_PATH := $(TARGET_KERNEL_SOURCE)/arch/arm/configs/$(TARGET_KERNEL_CONFIG)
-
-AOKP_TARGET_PACKAGE := $(PRODUCT_OUT)/$(AOKP_VERSION).zip
+ifeq ($(TASK_BOOTZIP),)
+    ifeq ($(TARGET_DEVICE),jflteatt)
+        BOOT_ZIP_FROM_IMAGE_SCRIPT := ./build/tools/releasetools/boot_flash_from_image_loki
+    else ifeq ($(TARGET_DEVICE),jfltevzw)
+        BOOT_ZIP_FROM_IMAGE_SCRIPT := ./build/tools/releasetools/boot_flash_from_image_loki
+    else
+        BOOT_ZIP_FROM_IMAGE_SCRIPT := ./build/tools/releasetools/boot_flash_from_image
+    endif
+    KERNEL_PATH := $(TARGET_KERNEL_SOURCE)/arch/arm/configs/$(TARGET_KERNEL_CONFIG)
+endif
 
 .PHONY: bootzip otapackage bacon
 bootzip: bootimage
 	$(BOOT_ZIP_FROM_IMAGE_SCRIPT) \
 	   $(recovery_fstab) \
 	   $(OUT) \
-	   $(TARGET_DEVICE)
+	   $(TARGET_DEVICE) \
+	   $(TASK_BOOTZIP) 
 
 otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
 bacon: otapackage
