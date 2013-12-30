@@ -15,6 +15,7 @@ STUBJAR=${OUTDIR}/target/common/obj/JAVA_LIBRARIES/android_stubs_current_interme
 FRAMEWORKJAR=${OUTDIR}/target/common/obj/JAVA_LIBRARIES/framework_intermediates/classes.jar
 COREJAR=${OUTDIR}/target/common/obj/JAVA_LIBRARIES/core_intermediates/classes.jar
 FRAMEWORKRESJAR=${OUTDIR}/target/common/obj/JAVA_LIBRARIES/framework-base_intermediates/classes.jar
+TELEPHONYJAR=${OUTDIR}/target/common/obj/JAVA_LIBRARIES/telephony-common_intermediates/classes.jar
 
 if [ ! -f $STUBJAR ]; then
 make $STUBJAR
@@ -28,6 +29,9 @@ fi
 if [ ! -f $FRAMEWORKRESJAR ]; then
 make $FRAMEWORKRESJAR
 fi
+if [ ! -f $TELEPHONYJAR ]; then
+make $TELEPHONYJAR
+fi
 
 TMP_DIR=${OUTDIR}/tmp
 mkdir -p ${TMP_DIR}
@@ -35,6 +39,7 @@ $(cd ${TMP_DIR}; jar -xf ${STUBJAR})
 $(cd ${TMP_DIR}; jar -xf ${COREJAR})
 $(cd ${TMP_DIR}; jar -xf ${FRAMEWORKJAR})
 $(cd ${TMP_DIR}; jar -xf ${FRAMEWORKRESJAR})
+$(cd ${TMP_DIR}; jar -xf ${TELEPHONYJAR})
 
 jar -cf ${OUTDIR}/android.jar -C ${TMP_DIR}/ .
 
@@ -42,7 +47,7 @@ echo "android.jar created at ${OUTDIR}/android.jar"
 echo "Now attempting to create new sdk platform with it"
 
 if [ -z "$ANDROID_HOME" ]; then
-    ANDROID=$(command -v android)
+    ANDROID=$(command -v emulator)
     ANDROID_HOME=${ANDROID%/*}
     if [ -z "$ANDROID_HOME" ]; then
         echo "ANDROID_HOME variable is not set. Do you have the sdk installed ?"
