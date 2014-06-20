@@ -445,7 +445,7 @@ TARGET_GLOBAL_CPPFLAGS += $(TARGET_RELEASE_CPPFLAGS)
 
 # allow overriding default Java libraries on a per-target basis
 ifeq ($(TARGET_DEFAULT_JAVA_LIBRARIES),)
-  TARGET_DEFAULT_JAVA_LIBRARIES := core core-junit ext framework framework2
+  TARGET_DEFAULT_JAVA_LIBRARIES := core-libart core-junit ext framework framework2
 endif
 
 # define llvm tools and global flags
