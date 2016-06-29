@@ -90,13 +90,13 @@ function check_product()
         return
     fi
 
-    if (echo -n $1 | grep -q -e "^aokp_") ; then
-       AOKP_DEVICE=$(echo -n $1 | sed -e 's/^aokp_//g')
-       export BUILD_NUMBER=$((date +%s%N ; echo $AOKP_DEVICE; hostname) | openssl sha1 | sed -e 's/.*=//g; s/ //g' | cut -c1-10)
+    if (echo -n $1 | grep -q -e "^task650_") ; then
+       TASK650_DEVICE=$(echo -n $1 | sed -e 's/^task650_//g')
+       export BUILD_NUMBER=$((date +%s%N ; echo $TASK650_DEVICE; hostname) | openssl sha1 | sed -e 's/.*=//g; s/ //g' | cut -c1-10)
     else
-       AOKP_DEVICE=
+       TASK650_DEVICE=
     fi
-    export AOKP_DEVICE
+    export TASK650_DEVICE
 
         TARGET_PRODUCT=$1 \
         TARGET_BUILD_VARIANT= \
@@ -510,7 +510,7 @@ function print_lunch_menu()
        echo "  (ohai, koush!)"
     fi
     echo
-    if [ "z${AOKP_DEVICES_ONLY}" != "z" ]; then
+    if [ "z${TASK650_DEVICES_ONLY}" != "z" ]; then
        echo "Breakfast menu... pick a combo:"
     else
        echo "Lunch menu... pick a combo:"
@@ -524,7 +524,7 @@ function print_lunch_menu()
         i=$(($i+1))
     done | column
 
-    if [ "z${AOKP_DEVICES_ONLY}" != "z" ]; then
+    if [ "z${TASK650_DEVICES_ONLY}" != "z" ]; then
        echo "... and don't forget the bacon!"
     fi
 
@@ -547,7 +547,7 @@ function breakfast()
 {
     target=$1
     local variant=$2
-    AOKP_DEVICES_ONLY="true"
+    TASK650_DEVICES_ONLY="true"
     unset LUNCH_MENU_CHOICES
     add_lunch_combo full-eng
     for f in `/bin/ls vendor/aokp/vendorsetup.sh 2> /dev/null`
@@ -566,11 +566,11 @@ function breakfast()
             # A buildtype was specified, assume a full device name
             lunch $target
         else
-            # This is probably just the AOKP model name
+            # This is probably just the TASK650 model name
             if [ -z "$variant" ]; then
                 variant="userdebug"
             fi
-            lunch aokp_$target-$variant
+            lunch task650_$target-$variant
         fi
     fi
     return $?
@@ -617,7 +617,7 @@ function lunch()
     export TARGET_BUILD_APPS=
 
     local product=$(echo -n $selection | sed -e "s/-.*$//")
-    local device=$(echo -n $product | sed -e "s/.*aokp_//")
+    local device=$(echo -n $product | sed -e "s/.*task650_//")
     check_product $product
     if [ $? -ne 0 ]
     then
@@ -733,8 +733,8 @@ function tapas()
 function eat()
 {
     if [ "$OUT" ] ; then
-        MODVERSION=$(get_build_var AOKP_VERSION)
-        ZIPFILE=aokp-$MODVERSION.zip
+        MODVERSION=$(get_build_var TASK650_VERSION)
+        ZIPFILE=task650-$MODVERSION.zip
         ZIPPATH=$OUT/$ZIPFILE
         if [ ! -f $ZIPPATH ] ; then
             echo "Nothing to eat"
@@ -749,7 +749,7 @@ function eat()
             done
             echo "Device Found.."
         fi
-    if (adb shell getprop ro.aokp.device | grep -q "$AOKP_BUILD");
+    if (adb shell getprop ro.task650.device | grep -q "$TASK650_BUILD");
     then
         # if adbd isn't root we can't write to /cache/recovery/
         adb root
@@ -771,7 +771,7 @@ EOF
     fi
     return $?
     else
-        echo "The connected device does not appear to be $AOKP_BUILD, run away!"
+        echo "The connected device does not appear to be $TASK650_BUILD, run away!"
     fi
 }
 
@@ -1869,7 +1869,7 @@ function installboot()
     sleep 1
     adb wait-for-online shell mount /system 2>&1 > /dev/null
     adb wait-for-online remount
-    if (adb shell getprop ro.aokp.device | grep -q "$AOKP_BUILD");
+    if (adb shell getprop ro.task650.device | grep -q "$TASK650_BUILD");
     then
         adb push $OUT/boot.img /cache/
         for i in $OUT/system/lib/modules/*;
@@ -1880,7 +1880,7 @@ function installboot()
         adb shell chmod 644 /system/lib/modules/*
         echo "Installation complete."
     else
-        echo "The connected device does not appear to be $AOKP_BUILD, run away!"
+        echo "The connected device does not appear to be $TASK650_BUILD, run away!"
     fi
 }
 
@@ -1918,13 +1918,13 @@ function installrecovery()
     sleep 1
     adb wait-for-online shell mount /system 2>&1 >> /dev/null
     adb wait-for-online remount
-    if (adb shell getprop ro.aokp.device | grep -q "$AOKP_BUILD");
+    if (adb shell getprop ro.task650.device | grep -q "$TASK650_BUILD");
     then
         adb push $OUT/recovery.img /cache/
         adb shell dd if=/cache/recovery.img of=$PARTITION
         echo "Installation complete."
     else
-        echo "The connected device does not appear to be $AOKP_BUILD, run away!"
+        echo "The connected device does not appear to be $TASK650_BUILD, run away!"
     fi
 }
 
@@ -2361,7 +2361,7 @@ function dopush()
         echo "Device Found."
     fi
 
-    if (adb shell getprop ro.aokp.device | grep -q "$AOKP_BUILD") || [ "$FORCE_PUSH" = "true" ];
+    if (adb shell getprop ro.task650.device | grep -q "$TASK650_BUILD") || [ "$FORCE_PUSH" = "true" ];
     then
     # retrieve IP and PORT info if we're using a TCP connection
     TCPIPPORT=$(adb devices | egrep '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+:[0-9]+[^0-9]+' \
@@ -2472,7 +2472,7 @@ EOF
     rm -f $OUT/.log
     return 0
     else
-        echo "The connected device does not appear to be $AOKP_BUILD, run away!"
+        echo "The connected device does not appear to be $TASK650_BUILD, run away!"
     fi
 }
 

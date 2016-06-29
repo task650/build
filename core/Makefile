@@ -216,7 +216,7 @@ endif
 	$(hide) TARGET_BUILD_TYPE="$(TARGET_BUILD_VARIANT)" \
 			TARGET_BUILD_FLAVOR="$(TARGET_PRODUCT)-$(TARGET_BUILD_VARIANT)" \
 			TARGET_DEVICE="$(TARGET_VENDOR_DEVICE_NAME)" \
-			AOKP_DEVICE="$(TARGET_DEVICE)" \
+			TASK650_DEVICE="$(TARGET_DEVICE)" \
 			PRODUCT_NAME="$(TARGET_VENDOR_PRODUCT_NAME)" \
 			PRODUCT_BRAND="$(PRODUCT_BRAND)" \
 			PRODUCT_DEFAULT_LOCALE="$(call get-default-product-locale,$(PRODUCT_LOCALES))" \
@@ -1883,7 +1883,7 @@ endif
 ifeq ($(WITH_GMS),true)
     $(INTERNAL_OTA_PACKAGE_TARGET): backuptool := false
 else
-ifneq ($(AOKP_BUILD),)
+ifneq ($(TASK650_BUILD),)
     $(INTERNAL_OTA_PACKAGE_TARGET): backuptool := true
 else
     $(INTERNAL_OTA_PACKAGE_TARGET): backuptool := false
@@ -1921,14 +1921,14 @@ $(INTERNAL_OTA_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE) $(DISTTOOLS)
 	   $(if $(OEM_OTA_CONFIG), -o $(OEM_OTA_CONFIG)) \
 	   $(BUILT_TARGET_FILES_PACKAGE) $@
 
-AOKP_TARGET_PACKAGE := $(PRODUCT_OUT)/$(AOKP_VERSION).zip
-AOKP_TARGET_PACKAGE_FOLDER := $(PRODUCT_OUT)
+TASK650_TARGET_PACKAGE := $(PRODUCT_OUT)/$(TASK650_VERSION).zip
+TASK650_TARGET_PACKAGE_FOLDER := $(PRODUCT_OUT)
 
 .PHONY: otapackage bacon rainbowfarts
 otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
 bacon: otapackage
-	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(AOKP_TARGET_PACKAGE)
-	$(hide) $(MD5SUM) $(AOKP_TARGET_PACKAGE) > $(AOKP_TARGET_PACKAGE).md5sum
+	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(TASK650_TARGET_PACKAGE)
+	$(hide) $(MD5SUM) $(TASK650_TARGET_PACKAGE) > $(TASK650_TARGET_PACKAGE).md5sum
 rainbowfarts: bacon
 	@echo -e ""
 	@echo -e ${CL_CYN}"============================================================================"${CL_RST}
@@ -1941,10 +1941,10 @@ rainbowfarts: bacon
 	@echo -e ${CL_RED}"                       \\\\/_/\\\\/_/"${CL_MAG}"\\\\/_____/"${CL_CYN}"\\\\/_/\\\\/_/"${CL_BLU}" \\\\/_/"${CL_RST}
 	@echo -e ""
 	@echo -e ${CL_CYN}"=============================-Package complete-============================="${CL_RST}
-	@echo -e ${CL_CYN}"Folder : "${CL_MAG} $(AOKP_TARGET_PACKAGE_FOLDER)${CL_RST}
-	@echo -e ${CL_CYN}"ZipName: "${CL_MAG} $(subst $(AOKP_TARGET_PACKAGE_FOLDER)/,,$(AOKP_TARGET_PACKAGE))${CL_RST}
-	@echo -e ${CL_CYN}"MD5    : "${CL_MAG}" $(shell cat $(AOKP_TARGET_PACKAGE).md5sum | awk '{print $$1}')"${CL_RST}
-	@echo -e ${CL_CYN}"Size   : "${CL_MAG}" $(shell du -hs $(AOKP_TARGET_PACKAGE) | awk '{print $$1}')"${CL_RST}
+	@echo -e ${CL_CYN}"Folder : "${CL_MAG} $(TASK650_TARGET_PACKAGE_FOLDER)${CL_RST}
+	@echo -e ${CL_CYN}"ZipName: "${CL_MAG} $(subst $(TASK650_TARGET_PACKAGE_FOLDER)/,,$(TASK650_TARGET_PACKAGE))${CL_RST}
+	@echo -e ${CL_CYN}"MD5    : "${CL_MAG}" $(shell cat $(TASK650_TARGET_PACKAGE).md5sum | awk '{print $$1}')"${CL_RST}
+	@echo -e ${CL_CYN}"Size   : "${CL_MAG}" $(shell du -hs $(TASK650_TARGET_PACKAGE) | awk '{print $$1}')"${CL_RST}
 	@echo -e ${CL_CYN}"============================================================================"${CL_RST}
 	@echo -e ""
 

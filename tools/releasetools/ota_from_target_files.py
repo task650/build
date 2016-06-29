@@ -644,21 +644,21 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   script.Print("*                         http://aokp.co *");
   script.Print("******************************************");
 
-  aokpv = GetBuildProp("ro.aokp.version", OPTIONS.info_dict)
-  if os.getenv("AOKP_BUILD") is not None:
-    build = ' '.join(aokpv.split('_')[3].split('-')).title()
+  task650v = GetBuildProp("ro.task650.version", OPTIONS.info_dict)
+  if os.getenv("TASK650_BUILD") is not None:
+    build = ' '.join(task650v.split('_')[3].split('-')).title()
     script.Print("*   Version: %s"%(build));
-  elif os.getenv("AOKP_BUILDTYPE") is not None:
-    build = ' '.join(aokpv.split('_')[2:]).title()
+  elif os.getenv("TASK650_BUILDTYPE") is not None:
+    build = ' '.join(task650v.split('_')[2:]).title()
     script.Print("*   Version: %s"%(build));
   else:
     build = GetBuildProp("ro.build.date", OPTIONS.info_dict)
     script.Print("******************************************");
-    script.Print("************ UNOFFICIAL BUILD ************");
+    script.Print("********* OFFICIAL TASK650 BUILD *********");
     script.Print("******************************************");
     script.Print("*   Compiled: %s"%(build));
 
-  device = GetBuildProp("ro.aokp.device", OPTIONS.info_dict)
+  device = GetBuildProp("ro.task650.device", OPTIONS.info_dict)
   if GetBuildProp("ro.product.model", OPTIONS.info_dict) is not None:
       model = GetBuildProp("ro.product.model", OPTIONS.info_dict)
       script.Print("*   Device: %s (%s)"%(model, device));
